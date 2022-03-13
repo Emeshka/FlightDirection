@@ -80,16 +80,10 @@ Get the article with given language and destination id. Returns an object, if no
 		@PathVariable Long destination_id
 	)
 
-	- Webpack
-	- Babel
-	- React
-	- Axios
-	- spring-boot-starter-data-jpa
-	- spring-boot-starter-web
-	- spring-boot-starter-thymeleaf
-	- postgresql
-	- spring-boot-starter-test
-	- spring-boot-devtools
-	- hibernate-core
+Quick memo to self about the stack:
 
-Note to self: run server in Intellij IDEA, then in root **npm run watch**. Resources and classes hot swapping is configured under the 'Build' menu. Changes detection should be done automatically, page reload is not.
+- Webpack, Babel to pack the front-end to bundle.js in resources folder.
+- React, Axios
+- Spring Boot Web
+- Spring Boot JPA, Hibernate
+- PostgreSQL
