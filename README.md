@@ -4,11 +4,11 @@ This project is my test of bundling Java Spring Boot with PostgreSQL and React f
 
 Data model for now:
 
-Destination
-|---Country
-|---Town
-Article
-FileBlob
+	Destination
+	|---Country
+	|---Town
+	Article
+	FileBlob
 
 Towns and countries are combined with an Entity class Destination (JOINED strategy of inheritance was chosen). Country also has a OneToOne relation to the capital Town.
 Articles should be attached to one and only destination. FileBlobs - as well, but Country also has extra OneToOne relation with FileBlob as flag.
