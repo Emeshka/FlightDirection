@@ -1,10 +1,26 @@
 import React from "react";
+import Select from 'react-select';
+import LanguageService from "../../API/LanguageService";
 
-const LanguageSelector = ({options, onchange}) => {
+const LanguageSelector = ({onChange}) => {
+    const options = []
+    let selectedOption = null
+    for (let code in LanguageService.nameByCode) {
+        const newOption = {
+            value: code,
+            label: LanguageService.nameByCode[code]
+        }
+        if (LanguageService.getLanguage().code == code) {
+            selectedOption = newOption
+        }
+        options.push(newOption)
+    }
     return (
-        <select>
-            {options.map(c => c.name).join(', ')}
-        </select>
+        <Select
+            defaultValue={selectedOption}
+            onChange={onChange}
+            options={options}
+        />
     );
 }
 

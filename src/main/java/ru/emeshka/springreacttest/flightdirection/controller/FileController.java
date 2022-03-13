@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.util.Base64;
 
 import ru.emeshka.springreacttest.flightdirection.message.ResponseFile;
 import ru.emeshka.springreacttest.flightdirection.message.ResponseMessage;
@@ -15,7 +15,6 @@ import ru.emeshka.springreacttest.flightdirection.model.FileBlob;
 import ru.emeshka.springreacttest.flightdirection.service.FileBlobService;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -24,8 +23,10 @@ public class FileController {
     @Autowired
     private FileBlobService storageService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/api/upload")
+    public ResponseEntity<ResponseMessage> uploadFile(
+            @RequestParam("file") MultipartFile file
+    ) {
         String message = "";
         try {
             storageService.store(file);
@@ -37,28 +38,17 @@ public class FileController {
         }
     }
 
-    @GetMapping("/files")
+    @GetMapping("/api/files")
     public ResponseEntity<List<ResponseFile>> getListFiles() {
-        List<ResponseFile> files = storageService.getAllFiles().map(dbFile -> {
-            String fileDownloadUri = ServletUriComponentsBuilder
-                    .fromCurrentContextPath()
-                    .path("/files/")
-                    .path(dbFile.getId().toString())
-                    .toUriString();
-            return new ResponseFile(
-                    dbFile.getName(),
-                    fileDownloadUri,
-                    dbFile.getType(),
-                    dbFile.getData().length);
-        }).collect(Collectors.toList());
+        List<ResponseFile> files = storageService.getAll().map(ResponseFile::new).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
-    @GetMapping("/files/{id}")
-    public ResponseEntity<byte[]> getFile(@PathVariable String id) {
-        FileBlob fileBlob = storageService.getFile(id);
+    @GetMapping("/api/file/{id}")
+    public ResponseEntity<String> getFile(@PathVariable String id) {
+        FileBlob fileBlob = storageService.get(id);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileBlob.getName() + "\"")
-                .body(fileBlob.getData());
+                .body(Base64.getEncoder().encodeToString(fileBlob.getData()));
     }
 }

@@ -1,42 +1,46 @@
 package ru.emeshka.springreacttest.flightdirection.model;
 
-import java.util.Objects;
+import javax.persistence.*;
+import java.util.List;
 
-public class Country {
-    private String name;
-    private String flag;
+@Entity
+@Table(name = "countries")
+public class Country extends Destination {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flag_id")
+    private FileBlob flag;
+    private String money;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "capital_id")
+    private Town capital;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+    private List<Town> towns;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Country country = (Country) o;
-        return name.equals(country.name) && flag.equals(country.flag);
+    public List<Town> getTowns() {
+        return towns;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, flag);
+    public String getMoney() {
+        return money;
     }
 
-    @Override
-    public String toString() {
-        return this.name;
+    public void setMoney(String money) {
+        this.money = money;
     }
 
-    public String getName() {
-        return name;
+    public Town getCapital() {
+        return capital;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCapital(Town capital) {
+        this.capital = capital;
     }
 
-    public String getFlag() {
+    public FileBlob getFlag() {
         return flag;
     }
 
-    public void setFlag(String flag) {
+    public void setFlag(FileBlob flag) {
         this.flag = flag;
     }
 }

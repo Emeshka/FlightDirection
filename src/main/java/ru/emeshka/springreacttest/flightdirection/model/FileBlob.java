@@ -1,14 +1,9 @@
 package ru.emeshka.springreacttest.flightdirection.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-
-import java.util.UUID;
 
 @Entity
 @Table(name = "files")
@@ -17,14 +12,14 @@ public class FileBlob {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-
     private String name;
-
     private String type;
-
     @Lob
     @Type(type="org.hibernate.type.BinaryType")
     private byte[] data;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destination_id")
+    private Destination destination;
 
     public FileBlob() {
     }

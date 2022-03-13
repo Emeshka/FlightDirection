@@ -1,16 +1,44 @@
 package ru.emeshka.springreacttest.flightdirection.message;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.emeshka.springreacttest.flightdirection.model.FileBlob;
+
 public class ResponseFile {
+    private final String NO_IMAGE = "/img/noimg.webp";
+    private final String NO_IMAGE_TYPE = "image/webp";
+
     private String name;
     private String url;
     private String type;
     private long size;
 
-    public ResponseFile(String name, String url, String type, long size) {
-        this.name = name;
-        this.url = url;
-        this.type = type;
-        this.size = size;
+    private void fillEmpty() {
+        this.name = "no image";
+        this.url = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path(NO_IMAGE)
+                .toUriString();
+        this.type = NO_IMAGE_TYPE;
+        this.size = -1;
+    }
+
+    public ResponseFile(FileBlob fileBlobModel) {
+        if (fileBlobModel == null) {
+            fillEmpty();
+        } else {
+            this.name = fileBlobModel.getName();
+            this.url = ServletUriComponentsBuilder
+                    .fromCurrentContextPath()
+                    .path("/api/file/")
+                    .path(fileBlobModel.getId())
+                    .toUriString();
+            this.type = fileBlobModel.getType();
+            this.size = fileBlobModel.getData().length;
+        }
+    }
+
+    public ResponseFile() {
+        fillEmpty();
     }
 
     public String getName() {

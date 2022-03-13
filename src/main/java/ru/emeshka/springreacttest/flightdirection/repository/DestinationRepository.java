@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.emeshka.springreacttest.flightdirection.model.Destination;
 
 @Repository
-public interface DestinationService extends JpaRepository<Destination, Long> {
+public interface DestinationRepository extends JpaRepository<Destination, Long> {
 }

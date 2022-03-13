@@ -7,7 +7,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.emeshka.springreacttest.flightdirection.model.FileBlob;
 import ru.emeshka.springreacttest.flightdirection.repository.FileBlobRepository;
 import java.io.IOException;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
@@ -20,11 +19,11 @@ public class FileBlobService {
         FileBlob fileBlob = new FileBlob(fileName, file.getContentType(), file.getBytes());
         return fileBlobRepository.save(fileBlob);
     }
-    public FileBlob getFile(String id) {
+    public FileBlob get(String id) {
         return fileBlobRepository.findById(id).get();
     }
 
-    public Stream<FileBlob> getAllFiles() {
+    public Stream<FileBlob> getAll() {
         return fileBlobRepository.findAll().stream();
     }
 }
