@@ -1,6 +1,6 @@
 # FlightDirection - web site about travelling
 
-This project is my test of bundling Java Spring Boot with PostgreSQL and React front-end part. Entities are for now FileBlob and Country.
+This project is my test of bundling Java Spring Boot with PostgreSQL and React front-end part.
 
 Data model for now:
 
